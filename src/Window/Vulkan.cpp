@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,17 +26,18 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Window/Vulkan.hpp>
+#include <meow/Window/Vulkan.hpp>
 
 #if defined(SFML_SYSTEM_WINDOWS)
 
-#include <SFML/Window/Win32/VulkanImplWin32.hpp>
-typedef sf::priv::VulkanImplWin32 VulkanImplType;
+#include <meow/Window/Win32/VulkanImplWin32.hpp>
+typedef meow::priv::VulkanImplWin32 VulkanImplType;
 
-#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD) || defined(SFML_SYSTEM_OPENBSD) || defined(SFML_SYSTEM_NETBSD)
+#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD) ||            \
+    defined(SFML_SYSTEM_OPENBSD) || defined(SFML_SYSTEM_NETBSD)
 
-#include <SFML/Window/Unix/VulkanImplX11.hpp>
-typedef sf::priv::VulkanImplX11 VulkanImplType;
+#include <meow/Window/Unix/VulkanImplX11.hpp>
+typedef meow::priv::VulkanImplX11 VulkanImplType;
 
 #else
 
@@ -43,53 +45,47 @@ typedef sf::priv::VulkanImplX11 VulkanImplType;
 
 #endif
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-bool Vulkan::isAvailable(bool requireGraphics)
-{
+bool Vulkan::isAvailable(bool requireGraphics) {
 #if defined(SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE)
 
-    return false;
+  return false;
 
 #else
 
-    return VulkanImplType::isAvailable(requireGraphics);
+  return VulkanImplType::isAvailable(requireGraphics);
 
 #endif
 }
 
-
 ////////////////////////////////////////////////////////////
-VulkanFunctionPointer Vulkan::getFunction(const char* name)
-{
+VulkanFunctionPointer Vulkan::getFunction(const char *name) {
 #if defined(SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE)
 
-    return NULL;
+  return NULL;
 
 #else
 
-    return VulkanImplType::getFunction(name);
+  return VulkanImplType::getFunction(name);
 
 #endif
 }
 
-
 ////////////////////////////////////////////////////////////
-const std::vector<const char*>& Vulkan::getGraphicsRequiredInstanceExtensions()
-{
+const std::vector<const char *> &
+Vulkan::getGraphicsRequiredInstanceExtensions() {
 #if defined(SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE)
 
-    static const std::vector<const char*> empty;
+  static const std::vector<const char *> empty;
 
-    return empty;
+  return empty;
 
 #else
 
-    return VulkanImplType::getGraphicsRequiredInstanceExtensions();
+  return VulkanImplType::getGraphicsRequiredInstanceExtensions();
 
 #endif
 }
 
-} // namespace sf
+} // namespace meow

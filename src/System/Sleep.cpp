@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,22 +26,19 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/System/Sleep.hpp>
+#include <meow/System/Sleep.hpp>
 
 #if defined(SFML_SYSTEM_WINDOWS)
-    #include <SFML/System/Win32/SleepImpl.hpp>
+#include <meow/System/Win32/SleepImpl.hpp>
 #else
-    #include <SFML/System/Unix/SleepImpl.hpp>
+#include <meow/System/Unix/SleepImpl.hpp>
 #endif
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-void sleep(Time duration)
-{
-    if (duration >= Time::Zero)
-        priv::sleepImpl(duration);
+void sleep(Time duration) {
+  if (duration >= Time::Zero)
+    priv::sleepImpl(duration);
 }
 
-} // namespace sf
+} // namespace meow

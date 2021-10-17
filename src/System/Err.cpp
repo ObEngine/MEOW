@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,86 +26,68 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/System/Err.hpp>
-#include <streambuf>
 #include <cstdio>
+#include <meow/System/Err.hpp>
+#include <streambuf>
 
-
-namespace
-{
-// This class will be used as the default streambuf of sf::Err,
+namespace {
+// This class will be used as the default streambuf of meow::Err,
 // it outputs to stderr by default (to keep the default behavior)
-class DefaultErrStreamBuf : public std::streambuf
-{
+class DefaultErrStreamBuf : public std::streambuf {
 public:
+  DefaultErrStreamBuf() {
+    // Allocate the write buffer
+    static const int size = 64;
+    char *buffer = new char[size];
+    setp(buffer, buffer + size);
+  }
 
-    DefaultErrStreamBuf()
-    {
-        // Allocate the write buffer
-        static const int size = 64;
-        char* buffer = new char[size];
-        setp(buffer, buffer + size);
-    }
+  ~DefaultErrStreamBuf() {
+    // Synchronize
+    sync();
 
-    ~DefaultErrStreamBuf()
-    {
-        // Synchronize
-        sync();
-
-        // Delete the write buffer
-        delete[] pbase();
-    }
+    // Delete the write buffer
+    delete[] pbase();
+  }
 
 private:
+  virtual int overflow(int character) {
+    if ((character != EOF) && (pptr() != epptr())) {
+      // Valid character
+      return sputc(static_cast<char>(character));
+    } else if (character != EOF) {
+      // Not enough space in the buffer: synchronize output and try again
+      sync();
+      return overflow(character);
+    } else {
+      // Invalid character: synchronize output
+      return sync();
+    }
+  }
 
-    virtual int overflow(int character)
-    {
-        if ((character != EOF) && (pptr() != epptr()))
-        {
-            // Valid character
-            return sputc(static_cast<char>(character));
-        }
-        else if (character != EOF)
-        {
-            // Not enough space in the buffer: synchronize output and try again
-            sync();
-            return overflow(character);
-        }
-        else
-        {
-            // Invalid character: synchronize output
-            return sync();
-        }
+  virtual int sync() {
+    // Check if there is something into the write buffer
+    if (pbase() != pptr()) {
+      // Print the contents of the write buffer into the standard error output
+      std::size_t size = static_cast<int>(pptr() - pbase());
+      fwrite(pbase(), 1, size, stderr);
+
+      // Reset the pointer position to the beginning of the write buffer
+      setp(pbase(), epptr());
     }
 
-    virtual int sync()
-    {
-        // Check if there is something into the write buffer
-        if (pbase() != pptr())
-        {
-            // Print the contents of the write buffer into the standard error output
-            std::size_t size = static_cast<int>(pptr() - pbase());
-            fwrite(pbase(), 1, size, stderr);
-
-            // Reset the pointer position to the beginning of the write buffer
-            setp(pbase(), epptr());
-        }
-
-        return 0;
-    }
+    return 0;
+  }
 };
-}
+} // namespace
 
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-std::ostream& err()
-{
-    static DefaultErrStreamBuf buffer;
-    static std::ostream stream(&buffer);
+std::ostream &err() {
+  static DefaultErrStreamBuf buffer;
+  static std::ostream stream(&buffer);
 
-    return stream;
+  return stream;
 }
 
-
-} // namespace sf
+} // namespace meow

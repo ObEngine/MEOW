@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,45 +26,30 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/ConvexShape.hpp>
+#include <meow/Graphics/ConvexShape.hpp>
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-ConvexShape::ConvexShape(std::size_t pointCount)
-{
-    setPointCount(pointCount);
-}
-
+ConvexShape::ConvexShape(std::size_t pointCount) { setPointCount(pointCount); }
 
 ////////////////////////////////////////////////////////////
-void ConvexShape::setPointCount(std::size_t count)
-{
-    m_points.resize(count);
-    update();
+void ConvexShape::setPointCount(std::size_t count) {
+  m_points.resize(count);
+  update();
 }
-
 
 ////////////////////////////////////////////////////////////
-std::size_t ConvexShape::getPointCount() const
-{
-    return m_points.size();
-}
-
+std::size_t ConvexShape::getPointCount() const { return m_points.size(); }
 
 ////////////////////////////////////////////////////////////
-void ConvexShape::setPoint(std::size_t index, const Vector2f& point)
-{
-    m_points[index] = point;
-    update();
+void ConvexShape::setPoint(std::size_t index, const Vector2f &point) {
+  m_points[index] = point;
+  update();
 }
-
 
 ////////////////////////////////////////////////////////////
-Vector2f ConvexShape::getPoint(std::size_t index) const
-{
-    return m_points[index];
+Vector2f ConvexShape::getPoint(std::size_t index) const {
+  return m_points[index];
 }
 
-} // namespace sf
+} // namespace meow

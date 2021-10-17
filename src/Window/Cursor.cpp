@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,49 +26,32 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Window/Cursor.hpp>
-#include <SFML/Window/CursorImpl.hpp>
+#include <meow/Window/Cursor.hpp>
+#include <meow/Window/CursorImpl.hpp>
 
-namespace sf
-{
-
-////////////////////////////////////////////////////////////
-Cursor::Cursor() :
-m_impl(new priv::CursorImpl())
-{
-    // That's it
-}
-
+namespace meow {
 
 ////////////////////////////////////////////////////////////
-Cursor::~Cursor()
-{
-    delete m_impl;
+Cursor::Cursor() : m_impl(new priv::CursorImpl()) {
+  // That's it
 }
-
 
 ////////////////////////////////////////////////////////////
-bool Cursor::loadFromPixels(const Uint8* pixels, Vector2u size, Vector2u hotspot)
-{
-    if ((pixels == 0) || (size.x == 0) || (size.y == 0))
-        return false;
-    else
-        return m_impl->loadFromPixels(pixels, size, hotspot);
-}
-
+Cursor::~Cursor() { delete m_impl; }
 
 ////////////////////////////////////////////////////////////
-bool Cursor::loadFromSystem(Type type)
-{
-    return m_impl->loadFromSystem(type);
+bool Cursor::loadFromPixels(const Uint8 *pixels, Vector2u size,
+                            Vector2u hotspot) {
+  if ((pixels == 0) || (size.x == 0) || (size.y == 0))
+    return false;
+  else
+    return m_impl->loadFromPixels(pixels, size, hotspot);
 }
-
 
 ////////////////////////////////////////////////////////////
-const priv::CursorImpl& Cursor::getImpl() const
-{
-    return *m_impl;
-}
+bool Cursor::loadFromSystem(Type type) { return m_impl->loadFromSystem(type); }
 
-} // namespace sf
+////////////////////////////////////////////////////////////
+const priv::CursorImpl &Cursor::getImpl() const { return *m_impl; }
 
+} // namespace meow

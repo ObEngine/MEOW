@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,26 +26,20 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/TextureSaver.hpp>
+#include <meow/Graphics/TextureSaver.hpp>
 
-
-namespace sf
-{
-namespace priv
-{
+namespace meow {
+namespace priv {
 ////////////////////////////////////////////////////////////
-TextureSaver::TextureSaver()
-{
-    glCheck(glGetIntegerv(GL_TEXTURE_BINDING_2D, &m_textureBinding));
+TextureSaver::TextureSaver() {
+  glCheck(glGetIntegerv(GL_TEXTURE_BINDING_2D, &m_textureBinding));
 }
 
-
 ////////////////////////////////////////////////////////////
-TextureSaver::~TextureSaver()
-{
-    glCheck(glBindTexture(GL_TEXTURE_2D, m_textureBinding));
+TextureSaver::~TextureSaver() {
+  glCheck(glBindTexture(GL_TEXTURE_2D, m_textureBinding));
 }
 
 } // namespace priv
 
-} // namespace sf
+} // namespace meow

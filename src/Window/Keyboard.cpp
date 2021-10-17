@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,23 +26,18 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Window/Keyboard.hpp>
-#include <SFML/Window/InputImpl.hpp>
+#include <meow/Window/InputImpl.hpp>
+#include <meow/Window/Keyboard.hpp>
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-bool Keyboard::isKeyPressed(Key key)
-{
-    return priv::InputImpl::isKeyPressed(key);
+bool Keyboard::isKeyPressed(Key key) {
+  return priv::InputImpl::isKeyPressed(key);
 }
 
-
 ////////////////////////////////////////////////////////////
-void Keyboard::setVirtualKeyboardVisible(bool visible)
-{
-    priv::InputImpl::setVirtualKeyboardVisible(visible);
+void Keyboard::setVirtualKeyboardVisible(bool visible) {
+  priv::InputImpl::setVirtualKeyboardVisible(visible);
 }
 
-} // namespace sf
+} // namespace meow

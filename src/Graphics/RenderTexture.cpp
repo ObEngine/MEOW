@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,172 +26,119 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/RenderTexture.hpp>
-#include <SFML/Graphics/RenderTextureImplFBO.hpp>
-#include <SFML/Graphics/RenderTextureImplDefault.hpp>
-#include <SFML/System/Err.hpp>
+#include <meow/Graphics/RenderTexture.hpp>
+#include <meow/Graphics/RenderTextureImplDefault.hpp>
+#include <meow/Graphics/RenderTextureImplFBO.hpp>
+#include <meow/System/Err.hpp>
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-RenderTexture::RenderTexture() :
-m_impl(NULL)
-{
-
-}
-
+RenderTexture::RenderTexture() : m_impl(NULL) {}
 
 ////////////////////////////////////////////////////////////
-RenderTexture::~RenderTexture()
-{
-    delete m_impl;
-}
-
+RenderTexture::~RenderTexture() { delete m_impl; }
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::create(unsigned int width, unsigned int height, bool depthBuffer)
-{
-    return create(width, height, ContextSettings(depthBuffer ? 32 : 0));
+bool RenderTexture::create(unsigned int width, unsigned int height,
+                           bool depthBuffer) {
+  return create(width, height, ContextSettings(depthBuffer ? 32 : 0));
 }
-
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::create(unsigned int width, unsigned int height, const ContextSettings& settings)
-{
-    // Set texture to be in sRGB scale if requested
-    m_texture.setSrgb(settings.sRgbCapable);
+bool RenderTexture::create(unsigned int width, unsigned int height,
+                           const ContextSettings &settings) {
+  // Set texture to be in sRGB scale if requested
+  m_texture.setSrgb(settings.sRgbCapable);
 
-    // Create the texture
-    if (!m_texture.create(width, height))
-    {
-        err() << "Impossible to create render texture (failed to create the target texture)" << std::endl;
-        return false;
-    }
+  // Create the texture
+  if (!m_texture.create(width, height)) {
+    err() << "Impossible to create render texture (failed to create the target "
+             "texture)"
+          << std::endl;
+    return false;
+  }
 
-    // We disable smoothing by default for render textures
-    setSmooth(false);
+  // We disable smoothing by default for render textures
+  setSmooth(false);
 
-    // Create the implementation
-    delete m_impl;
-    if (priv::RenderTextureImplFBO::isAvailable())
-    {
-        // Use frame-buffer object (FBO)
-        m_impl = new priv::RenderTextureImplFBO;
+  // Create the implementation
+  delete m_impl;
+  if (priv::RenderTextureImplFBO::isAvailable()) {
+    // Use frame-buffer object (FBO)
+    m_impl = new priv::RenderTextureImplFBO;
 
-        // Mark the texture as being a framebuffer object attachment
-        m_texture.m_fboAttachment = true;
-    }
-    else
-    {
-        // Use default implementation
-        m_impl = new priv::RenderTextureImplDefault;
-    }
+    // Mark the texture as being a framebuffer object attachment
+    m_texture.m_fboAttachment = true;
+  } else {
+    // Use default implementation
+    m_impl = new priv::RenderTextureImplDefault;
+  }
 
-    // Initialize the render texture
-    if (!m_impl->create(width, height, m_texture.m_texture, settings))
-        return false;
+  // Initialize the render texture
+  if (!m_impl->create(width, height, m_texture.m_texture, settings))
+    return false;
 
-    // We can now initialize the render target part
-    RenderTarget::initialize();
+  // We can now initialize the render target part
+  RenderTarget::initialize();
 
-    return true;
+  return true;
 }
-
 
 ////////////////////////////////////////////////////////////
-unsigned int RenderTexture::getMaximumAntialiasingLevel()
-{
-    if (priv::RenderTextureImplFBO::isAvailable())
-    {
-        return priv::RenderTextureImplFBO::getMaximumAntialiasingLevel();
-    }
-    else
-    {
-        return priv::RenderTextureImplDefault::getMaximumAntialiasingLevel();
-    }
+unsigned int RenderTexture::getMaximumAntialiasingLevel() {
+  if (priv::RenderTextureImplFBO::isAvailable()) {
+    return priv::RenderTextureImplFBO::getMaximumAntialiasingLevel();
+  } else {
+    return priv::RenderTextureImplDefault::getMaximumAntialiasingLevel();
+  }
 }
-
 
 ////////////////////////////////////////////////////////////
-void RenderTexture::setSmooth(bool smooth)
-{
-    m_texture.setSmooth(smooth);
-}
-
+void RenderTexture::setSmooth(bool smooth) { m_texture.setSmooth(smooth); }
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::isSmooth() const
-{
-    return m_texture.isSmooth();
-}
-
+bool RenderTexture::isSmooth() const { return m_texture.isSmooth(); }
 
 ////////////////////////////////////////////////////////////
-void RenderTexture::setRepeated(bool repeated)
-{
-    m_texture.setRepeated(repeated);
+void RenderTexture::setRepeated(bool repeated) {
+  m_texture.setRepeated(repeated);
 }
-
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::isRepeated() const
-{
-    return m_texture.isRepeated();
-}
-
+bool RenderTexture::isRepeated() const { return m_texture.isRepeated(); }
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::generateMipmap()
-{
-    return m_texture.generateMipmap();
-}
-
+bool RenderTexture::generateMipmap() { return m_texture.generateMipmap(); }
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::setActive(bool active)
-{
-    bool result = m_impl && m_impl->activate(active);
+bool RenderTexture::setActive(bool active) {
+  bool result = m_impl && m_impl->activate(active);
 
-    // Update RenderTarget tracking
-    if (result)
-        RenderTarget::setActive(active);
+  // Update RenderTarget tracking
+  if (result)
+    RenderTarget::setActive(active);
 
-    return result;
+  return result;
 }
-
 
 ////////////////////////////////////////////////////////////
-void RenderTexture::display()
-{
-    // Update the target texture
-    if (m_impl && (priv::RenderTextureImplFBO::isAvailable() || setActive(true)))
-    {
-        m_impl->updateTexture(m_texture.m_texture);
-        m_texture.m_pixelsFlipped = true;
-        m_texture.invalidateMipmap();
-    }
+void RenderTexture::display() {
+  // Update the target texture
+  if (m_impl &&
+      (priv::RenderTextureImplFBO::isAvailable() || setActive(true))) {
+    m_impl->updateTexture(m_texture.m_texture);
+    m_texture.m_pixelsFlipped = true;
+    m_texture.invalidateMipmap();
+  }
 }
-
 
 ////////////////////////////////////////////////////////////
-Vector2u RenderTexture::getSize() const
-{
-    return m_texture.getSize();
-}
-
+Vector2u RenderTexture::getSize() const { return m_texture.getSize(); }
 
 ////////////////////////////////////////////////////////////
-bool RenderTexture::isSrgb() const
-{
-    return m_impl->isSrgb();
-}
-
+bool RenderTexture::isSrgb() const { return m_impl->isSrgb(); }
 
 ////////////////////////////////////////////////////////////
-const Texture& RenderTexture::getTexture() const
-{
-    return m_texture;
-}
+const Texture &RenderTexture::getTexture() const { return m_texture; }
 
-} // namespace sf
+} // namespace meow

@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(MultimediaWrapper)
+project(MEOW)
 
-file(GLOB_RECURSE MW_HEADERS CONFIGURE_DEPENDS include/MW/*.hpp include/MW/*.inl)
-file(GLOB_RECURSE MW_SOURCES CONFIGURE_DEPENDS src/*.cpp)
+file(GLOB_RECURSE MEOW_HEADERS CONFIGURE_DEPENDS include/meow/*.hpp include/meow/*.inl)
+file(GLOB_RECURSE MEOW_SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
-add_library(MultimediaWrapper ${MW_HEADERS} ${MW_SOURCES})
+add_library(MEOW ${MEOW_HEADERS} ${MEOW_SOURCES})
 
-target_include_directories(MultimediaWrapper
+target_include_directories(MEOW
     PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/MW
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/meow
         ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 

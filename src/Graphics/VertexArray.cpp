@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,126 +26,82 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/VertexArray.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
+#include <meow/Graphics/RenderTarget.hpp>
+#include <meow/Graphics/VertexArray.hpp>
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-VertexArray::VertexArray() :
-m_vertices     (),
-m_primitiveType(Points)
-{
+VertexArray::VertexArray() : m_vertices(), m_primitiveType(Points) {}
+
+////////////////////////////////////////////////////////////
+VertexArray::VertexArray(PrimitiveType type, std::size_t vertexCount)
+    : m_vertices(vertexCount), m_primitiveType(type) {}
+
+////////////////////////////////////////////////////////////
+std::size_t VertexArray::getVertexCount() const { return m_vertices.size(); }
+
+////////////////////////////////////////////////////////////
+Vertex &VertexArray::operator[](std::size_t index) { return m_vertices[index]; }
+
+////////////////////////////////////////////////////////////
+const Vertex &VertexArray::operator[](std::size_t index) const {
+  return m_vertices[index];
 }
 
+////////////////////////////////////////////////////////////
+void VertexArray::clear() { m_vertices.clear(); }
 
 ////////////////////////////////////////////////////////////
-VertexArray::VertexArray(PrimitiveType type, std::size_t vertexCount) :
-m_vertices     (vertexCount),
-m_primitiveType(type)
-{
+void VertexArray::resize(std::size_t vertexCount) {
+  m_vertices.resize(vertexCount);
 }
 
+////////////////////////////////////////////////////////////
+void VertexArray::append(const Vertex &vertex) { m_vertices.push_back(vertex); }
 
 ////////////////////////////////////////////////////////////
-std::size_t VertexArray::getVertexCount() const
-{
-    return m_vertices.size();
+void VertexArray::setPrimitiveType(PrimitiveType type) {
+  m_primitiveType = type;
 }
 
+////////////////////////////////////////////////////////////
+PrimitiveType VertexArray::getPrimitiveType() const { return m_primitiveType; }
 
 ////////////////////////////////////////////////////////////
-Vertex& VertexArray::operator [](std::size_t index)
-{
-    return m_vertices[index];
-}
+FloatRect VertexArray::getBounds() const {
+  if (!m_vertices.empty()) {
+    float left = m_vertices[0].position.x;
+    float top = m_vertices[0].position.y;
+    float right = m_vertices[0].position.x;
+    float bottom = m_vertices[0].position.y;
 
+    for (std::size_t i = 1; i < m_vertices.size(); ++i) {
+      Vector2f position = m_vertices[i].position;
 
-////////////////////////////////////////////////////////////
-const Vertex& VertexArray::operator [](std::size_t index) const
-{
-    return m_vertices[index];
-}
+      // Update left and right
+      if (position.x < left)
+        left = position.x;
+      else if (position.x > right)
+        right = position.x;
 
-
-////////////////////////////////////////////////////////////
-void VertexArray::clear()
-{
-    m_vertices.clear();
-}
-
-
-////////////////////////////////////////////////////////////
-void VertexArray::resize(std::size_t vertexCount)
-{
-    m_vertices.resize(vertexCount);
-}
-
-
-////////////////////////////////////////////////////////////
-void VertexArray::append(const Vertex& vertex)
-{
-    m_vertices.push_back(vertex);
-}
-
-
-////////////////////////////////////////////////////////////
-void VertexArray::setPrimitiveType(PrimitiveType type)
-{
-    m_primitiveType = type;
-}
-
-
-////////////////////////////////////////////////////////////
-PrimitiveType VertexArray::getPrimitiveType() const
-{
-    return m_primitiveType;
-}
-
-
-////////////////////////////////////////////////////////////
-FloatRect VertexArray::getBounds() const
-{
-    if (!m_vertices.empty())
-    {
-        float left   = m_vertices[0].position.x;
-        float top    = m_vertices[0].position.y;
-        float right  = m_vertices[0].position.x;
-        float bottom = m_vertices[0].position.y;
-
-        for (std::size_t i = 1; i < m_vertices.size(); ++i)
-        {
-            Vector2f position = m_vertices[i].position;
-
-            // Update left and right
-            if (position.x < left)
-                left = position.x;
-            else if (position.x > right)
-                right = position.x;
-
-            // Update top and bottom
-            if (position.y < top)
-                top = position.y;
-            else if (position.y > bottom)
-                bottom = position.y;
-        }
-
-        return FloatRect(left, top, right - left, bottom - top);
+      // Update top and bottom
+      if (position.y < top)
+        top = position.y;
+      else if (position.y > bottom)
+        bottom = position.y;
     }
-    else
-    {
-        // Array is empty
-        return FloatRect();
-    }
-}
 
+    return FloatRect(left, top, right - left, bottom - top);
+  } else {
+    // Array is empty
+    return FloatRect();
+  }
+}
 
 ////////////////////////////////////////////////////////////
-void VertexArray::draw(RenderTarget& target, RenderStates states) const
-{
-    if (!m_vertices.empty())
-        target.draw(&m_vertices[0], m_vertices.size(), m_primitiveType, states);
+void VertexArray::draw(RenderTarget &target, RenderStates states) const {
+  if (!m_vertices.empty())
+    target.draw(&m_vertices[0], m_vertices.size(), m_primitiveType, states);
 }
 
-} // namespace sf
+} // namespace meow

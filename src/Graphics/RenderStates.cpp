@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,78 +26,44 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/RenderStates.hpp>
 #include <cstddef>
+#include <meow/Graphics/RenderStates.hpp>
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-// We cannot use the default constructor here, because it accesses BlendAlpha, which is also global (and dynamically
-// initialized). Initialization order of global objects in different translation units is not defined.
-const RenderStates RenderStates::Default(BlendMode(
-    BlendMode::SrcAlpha, BlendMode::OneMinusSrcAlpha, BlendMode::Add,
-    BlendMode::One, BlendMode::OneMinusSrcAlpha, BlendMode::Add));
-
-
-////////////////////////////////////////////////////////////
-RenderStates::RenderStates() :
-blendMode(BlendAlpha),
-transform(),
-texture  (NULL),
-shader   (NULL)
-{
-}
-
+// We cannot use the default constructor here, because it accesses BlendAlpha,
+// which is also global (and dynamically initialized). Initialization order of
+// global objects in different translation units is not defined.
+const RenderStates RenderStates::Default(
+    BlendMode(BlendMode::SrcAlpha, BlendMode::OneMinusSrcAlpha, BlendMode::Add,
+              BlendMode::One, BlendMode::OneMinusSrcAlpha, BlendMode::Add));
 
 ////////////////////////////////////////////////////////////
-RenderStates::RenderStates(const Transform& theTransform) :
-blendMode(BlendAlpha),
-transform(theTransform),
-texture  (NULL),
-shader   (NULL)
-{
-}
-
+RenderStates::RenderStates()
+    : blendMode(BlendAlpha), transform(), texture(NULL), shader(NULL) {}
 
 ////////////////////////////////////////////////////////////
-RenderStates::RenderStates(const BlendMode& theBlendMode) :
-blendMode(theBlendMode),
-transform(),
-texture  (NULL),
-shader   (NULL)
-{
-}
-
+RenderStates::RenderStates(const Transform &theTransform)
+    : blendMode(BlendAlpha), transform(theTransform), texture(NULL),
+      shader(NULL) {}
 
 ////////////////////////////////////////////////////////////
-RenderStates::RenderStates(const Texture* theTexture) :
-blendMode(BlendAlpha),
-transform(),
-texture  (theTexture),
-shader   (NULL)
-{
-}
-
+RenderStates::RenderStates(const BlendMode &theBlendMode)
+    : blendMode(theBlendMode), transform(), texture(NULL), shader(NULL) {}
 
 ////////////////////////////////////////////////////////////
-RenderStates::RenderStates(const Shader* theShader) :
-blendMode(BlendAlpha),
-transform(),
-texture  (NULL),
-shader   (theShader)
-{
-}
-
+RenderStates::RenderStates(const Texture *theTexture)
+    : blendMode(BlendAlpha), transform(), texture(theTexture), shader(NULL) {}
 
 ////////////////////////////////////////////////////////////
-RenderStates::RenderStates(const BlendMode& theBlendMode, const Transform& theTransform,
-                           const Texture* theTexture, const Shader* theShader) :
-blendMode(theBlendMode),
-transform(theTransform),
-texture  (theTexture),
-shader   (theShader)
-{
-}
+RenderStates::RenderStates(const Shader *theShader)
+    : blendMode(BlendAlpha), transform(), texture(NULL), shader(theShader) {}
 
-} // namespace sf
+////////////////////////////////////////////////////////////
+RenderStates::RenderStates(const BlendMode &theBlendMode,
+                           const Transform &theTransform,
+                           const Texture *theTexture, const Shader *theShader)
+    : blendMode(theBlendMode), transform(theTransform), texture(theTexture),
+      shader(theShader) {}
+
+} // namespace meow

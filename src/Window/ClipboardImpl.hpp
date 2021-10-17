@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -28,18 +29,19 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Config.hpp>
+#include <meow/Config.hpp>
 
 #if defined(SFML_SYSTEM_WINDOWS)
-    #include <SFML/Window/Win32/ClipboardImpl.hpp>
-#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD) || defined(SFML_SYSTEM_OPENBSD) || defined(SFML_SYSTEM_NETBSD)
-    #include <SFML/Window/Unix/ClipboardImpl.hpp>
+#include <meow/Window/Win32/ClipboardImpl.hpp>
+#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD) ||            \
+    defined(SFML_SYSTEM_OPENBSD) || defined(SFML_SYSTEM_NETBSD)
+#include <meow/Window/Unix/ClipboardImpl.hpp>
 #elif defined(SFML_SYSTEM_MACOS)
-    #include <SFML/Window/OSX/ClipboardImpl.hpp>
+#include <meow/Window/OSX/ClipboardImpl.hpp>
 #elif defined(SFML_SYSTEM_IOS)
-    #include <SFML/Window/iOS/ClipboardImpl.hpp>
+#include <meow/Window/iOS/ClipboardImpl.hpp>
 #elif defined(SFML_SYSTEM_ANDROID)
-    #include <SFML/Window/Android/ClipboardImpl.hpp>
+#include <meow/Window/Android/ClipboardImpl.hpp>
 #endif
 
 #endif // SFML_CLIPBOARDIMPL_HPP

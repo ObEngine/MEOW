@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,42 +26,25 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/System/Mutex.hpp>
+#include <meow/System/Mutex.hpp>
 
 #if defined(SFML_SYSTEM_WINDOWS)
-    #include <SFML/System/Win32/MutexImpl.hpp>
+#include <meow/System/Win32/MutexImpl.hpp>
 #else
-    #include <SFML/System/Unix/MutexImpl.hpp>
+#include <meow/System/Unix/MutexImpl.hpp>
 #endif
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-Mutex::Mutex()
-{
-    m_mutexImpl = new priv::MutexImpl;
-}
-
+Mutex::Mutex() { m_mutexImpl = new priv::MutexImpl; }
 
 ////////////////////////////////////////////////////////////
-Mutex::~Mutex()
-{
-    delete m_mutexImpl;
-}
-
+Mutex::~Mutex() { delete m_mutexImpl; }
 
 ////////////////////////////////////////////////////////////
-void Mutex::lock()
-{
-    m_mutexImpl->lock();
-}
-
+void Mutex::lock() { m_mutexImpl->lock(); }
 
 ////////////////////////////////////////////////////////////
-void Mutex::unlock()
-{
-    m_mutexImpl->unlock();
-}
+void Mutex::unlock() { m_mutexImpl->unlock(); }
 
-} // namespace sf
+} // namespace meow

@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,60 +26,43 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/CircleShape.hpp>
 #include <cmath>
+#include <meow/Graphics/CircleShape.hpp>
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-CircleShape::CircleShape(float radius, std::size_t pointCount) :
-m_radius    (radius),
-m_pointCount(pointCount)
-{
-    update();
-}
-
-
-////////////////////////////////////////////////////////////
-void CircleShape::setRadius(float radius)
-{
-    m_radius = radius;
-    update();
-}
-
-
-////////////////////////////////////////////////////////////
-float CircleShape::getRadius() const
-{
-    return m_radius;
-}
-
-
-////////////////////////////////////////////////////////////
-void CircleShape::setPointCount(std::size_t count)
-{
-    m_pointCount = count;
-    update();
+CircleShape::CircleShape(float radius, std::size_t pointCount)
+    : m_radius(radius), m_pointCount(pointCount) {
+  update();
 }
 
 ////////////////////////////////////////////////////////////
-std::size_t CircleShape::getPointCount() const
-{
-    return m_pointCount;
+void CircleShape::setRadius(float radius) {
+  m_radius = radius;
+  update();
 }
-
 
 ////////////////////////////////////////////////////////////
-Vector2f CircleShape::getPoint(std::size_t index) const
-{
-    static const float pi = 3.141592654f;
+float CircleShape::getRadius() const { return m_radius; }
 
-    float angle = index * 2 * pi / m_pointCount - pi / 2;
-    float x = std::cos(angle) * m_radius;
-    float y = std::sin(angle) * m_radius;
-
-    return Vector2f(m_radius + x, m_radius + y);
+////////////////////////////////////////////////////////////
+void CircleShape::setPointCount(std::size_t count) {
+  m_pointCount = count;
+  update();
 }
 
-} // namespace sf
+////////////////////////////////////////////////////////////
+std::size_t CircleShape::getPointCount() const { return m_pointCount; }
+
+////////////////////////////////////////////////////////////
+Vector2f CircleShape::getPoint(std::size_t index) const {
+  static const float pi = 3.141592654f;
+
+  float angle = index * 2 * pi / m_pointCount - pi / 2;
+  float x = std::cos(angle) * m_radius;
+  float y = std::sin(angle) * m_radius;
+
+  return Vector2f(m_radius + x, m_radius + y);
+}
+
+} // namespace meow

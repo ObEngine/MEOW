@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,99 +26,75 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Window/JoystickManager.hpp>
+#include <meow/Window/JoystickManager.hpp>
 
-
-namespace sf
-{
-namespace priv
-{
+namespace meow {
+namespace priv {
 ////////////////////////////////////////////////////////////
-JoystickManager& JoystickManager::getInstance()
-{
-    static JoystickManager instance;
-    return instance;
+JoystickManager &JoystickManager::getInstance() {
+  static JoystickManager instance;
+  return instance;
 }
 
-
 ////////////////////////////////////////////////////////////
-const JoystickCaps& JoystickManager::getCapabilities(unsigned int joystick) const
-{
-    return m_joysticks[joystick].capabilities;
+const JoystickCaps &
+JoystickManager::getCapabilities(unsigned int joystick) const {
+  return m_joysticks[joystick].capabilities;
 }
 
-
 ////////////////////////////////////////////////////////////
-const JoystickState& JoystickManager::getState(unsigned int joystick) const
-{
-    return m_joysticks[joystick].state;
+const JoystickState &JoystickManager::getState(unsigned int joystick) const {
+  return m_joysticks[joystick].state;
 }
 
-
 ////////////////////////////////////////////////////////////
-const Joystick::Identification& JoystickManager::getIdentification(unsigned int joystick) const
-{
-    return m_joysticks[joystick].identification;
+const Joystick::Identification &
+JoystickManager::getIdentification(unsigned int joystick) const {
+  return m_joysticks[joystick].identification;
 }
 
-
 ////////////////////////////////////////////////////////////
-void JoystickManager::update()
-{
-    for (int i = 0; i < Joystick::Count; ++i)
-    {
-        Item& item = m_joysticks[i];
+void JoystickManager::update() {
+  for (int i = 0; i < Joystick::Count; ++i) {
+    Item &item = m_joysticks[i];
 
-        if (item.state.connected)
-        {
-            // Get the current state of the joystick
-            item.state = item.joystick.update();
+    if (item.state.connected) {
+      // Get the current state of the joystick
+      item.state = item.joystick.update();
 
-            // Check if it's still connected
-            if (!item.state.connected)
-            {
-                item.joystick.close();
-                item.capabilities   = JoystickCaps();
-                item.state          = JoystickState();
-                item.identification = Joystick::Identification();
-            }
+      // Check if it's still connected
+      if (!item.state.connected) {
+        item.joystick.close();
+        item.capabilities = JoystickCaps();
+        item.state = JoystickState();
+        item.identification = Joystick::Identification();
+      }
+    } else {
+      // Check if the joystick was connected since last update
+      if (JoystickImpl::isConnected(i)) {
+        if (item.joystick.open(i)) {
+          item.capabilities = item.joystick.getCapabilities();
+          item.state = item.joystick.update();
+          item.identification = item.joystick.getIdentification();
         }
-        else
-        {
-            // Check if the joystick was connected since last update
-            if (JoystickImpl::isConnected(i))
-            {
-                if (item.joystick.open(i))
-                {
-                    item.capabilities   = item.joystick.getCapabilities();
-                    item.state          = item.joystick.update();
-                    item.identification = item.joystick.getIdentification();
-                }
-            }
-        }
+      }
     }
+  }
 }
 
+////////////////////////////////////////////////////////////
+JoystickManager::JoystickManager() { JoystickImpl::initialize(); }
 
 ////////////////////////////////////////////////////////////
-JoystickManager::JoystickManager()
-{
-    JoystickImpl::initialize();
-}
+JoystickManager::~JoystickManager() {
+  for (int i = 0; i < Joystick::Count; ++i) {
+    if (m_joysticks[i].state.connected)
+      m_joysticks[i].joystick.close();
+  }
 
-
-////////////////////////////////////////////////////////////
-JoystickManager::~JoystickManager()
-{
-    for (int i = 0; i < Joystick::Count; ++i)
-    {
-        if (m_joysticks[i].state.connected)
-            m_joysticks[i].joystick.close();
-    }
-
-    JoystickImpl::cleanup();
+  JoystickImpl::cleanup();
 }
 
 } // namespace priv
 
-} // namespace sf
+} // namespace meow

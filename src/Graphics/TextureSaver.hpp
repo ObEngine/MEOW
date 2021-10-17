@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -28,48 +29,42 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/GLCheck.hpp>
+#include <meow/Graphics/GLCheck.hpp>
 
-
-namespace sf
-{
-namespace priv
-{
+namespace meow {
+namespace priv {
 ////////////////////////////////////////////////////////////
-/// \brief Automatic wrapper for saving and restoring the current texture binding
+/// \brief Automatic wrapper for saving and restoring the current texture
+/// binding
 ///
 ////////////////////////////////////////////////////////////
-class TextureSaver
-{
+class TextureSaver {
 public:
+  ////////////////////////////////////////////////////////////
+  /// \brief Default constructor
+  ///
+  /// The current texture binding is saved.
+  ///
+  ////////////////////////////////////////////////////////////
+  TextureSaver();
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Default constructor
-    ///
-    /// The current texture binding is saved.
-    ///
-    ////////////////////////////////////////////////////////////
-    TextureSaver();
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Destructor
-    ///
-    /// The previous texture binding is restored.
-    ///
-    ////////////////////////////////////////////////////////////
-    ~TextureSaver();
+  ////////////////////////////////////////////////////////////
+  /// \brief Destructor
+  ///
+  /// The previous texture binding is restored.
+  ///
+  ////////////////////////////////////////////////////////////
+  ~TextureSaver();
 
 private:
-
-    ////////////////////////////////////////////////////////////
-    // Member data
-    ////////////////////////////////////////////////////////////
-    GLint m_textureBinding; //!< Texture binding to restore
+  ////////////////////////////////////////////////////////////
+  // Member data
+  ////////////////////////////////////////////////////////////
+  GLint m_textureBinding; //!< Texture binding to restore
 };
 
 } // namespace priv
 
-} // namespace sf
-
+} // namespace meow
 
 #endif // SFML_TEXTURESAVER_HPP

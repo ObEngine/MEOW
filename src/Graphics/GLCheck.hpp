@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -28,27 +29,29 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Config.hpp>
-#include <SFML/Graphics/GLExtensions.hpp>
+#include <meow/Config.hpp>
+#include <meow/Graphics/GLExtensions.hpp>
 
-
-namespace sf
-{
-namespace priv
-{
+namespace meow {
+namespace priv {
 ////////////////////////////////////////////////////////////
 /// Let's define a macro to quickly check every OpenGL API call
 ////////////////////////////////////////////////////////////
 #ifdef SFML_DEBUG
 
-    // In debug mode, perform a test on every OpenGL call
-    // The do-while loop is needed so that glCheck can be used as a single statement in if/else branches
-    #define glCheck(expr) do { expr; sf::priv::glCheckError(__FILE__, __LINE__, #expr); } while (false)
+// In debug mode, perform a test on every OpenGL call
+// The do-while loop is needed so that glCheck can be used as a single statement
+// in if/else branches
+#define glCheck(expr)                                                          \
+  do {                                                                         \
+    expr;                                                                      \
+    meow::priv::glCheckError(__FILE__, __LINE__, #expr);                       \
+  } while (false)
 
 #else
 
-    // Else, we don't add any overhead
-    #define glCheck(expr) (expr)
+// Else, we don't add any overhead
+#define glCheck(expr) (expr)
 
 #endif
 
@@ -60,11 +63,10 @@ namespace priv
 /// \param expression The evaluated expression as a string
 ///
 ////////////////////////////////////////////////////////////
-void glCheckError(const char* file, unsigned int line, const char* expression);
+void glCheckError(const char *file, unsigned int line, const char *expression);
 
 } // namespace priv
 
-} // namespace sf
-
+} // namespace meow
 
 #endif // SFML_GLCHECK_HPP

@@ -4,11 +4,12 @@
 // Copyright (C) 2007-2021 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
-// In no event will the authors be held liable for any damages arising from the use of this software.
+// In no event will the authors be held liable for any damages arising from the
+// use of this software.
 //
 // Permission is granted to anyone to use this software for any purpose,
-// including commercial applications, and to alter it and redistribute it freely,
-// subject to the following restrictions:
+// including commercial applications, and to alter it and redistribute it
+// freely, subject to the following restrictions:
 //
 // 1. The origin of this software must not be misrepresented;
 //    you must not claim that you wrote the original software.
@@ -25,43 +26,28 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/System/ThreadLocal.hpp>
+#include <meow/System/ThreadLocal.hpp>
 
 #if defined(SFML_SYSTEM_WINDOWS)
-    #include <SFML/System/Win32/ThreadLocalImpl.hpp>
+#include <meow/System/Win32/ThreadLocalImpl.hpp>
 #else
-    #include <SFML/System/Unix/ThreadLocalImpl.hpp>
+#include <meow/System/Unix/ThreadLocalImpl.hpp>
 #endif
 
-
-namespace sf
-{
+namespace meow {
 ////////////////////////////////////////////////////////////
-ThreadLocal::ThreadLocal(void* value)
-{
-    m_impl = new priv::ThreadLocalImpl;
-    setValue(value);
+ThreadLocal::ThreadLocal(void *value) {
+  m_impl = new priv::ThreadLocalImpl;
+  setValue(value);
 }
 
+////////////////////////////////////////////////////////////
+ThreadLocal::~ThreadLocal() { delete m_impl; }
 
 ////////////////////////////////////////////////////////////
-ThreadLocal::~ThreadLocal()
-{
-    delete m_impl;
-}
-
+void ThreadLocal::setValue(void *value) { m_impl->setValue(value); }
 
 ////////////////////////////////////////////////////////////
-void ThreadLocal::setValue(void* value)
-{
-    m_impl->setValue(value);
-}
+void *ThreadLocal::getValue() const { return m_impl->getValue(); }
 
-
-////////////////////////////////////////////////////////////
-void* ThreadLocal::getValue() const
-{
-    return m_impl->getValue();
-}
-
-} // namespace sf
+} // namespace meow
